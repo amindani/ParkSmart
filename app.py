@@ -8,21 +8,22 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "parksmart2026"
 
+# Fungsi get_db yang sudah diperbarui untuk Vercel + Supabase
 def get_db():
-    # Membaca URL dari Environment Variable di Vercel
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
-        raise Exception("DATABASE_URL tidak ditemukan!")
+        raise Exception("DATABASE_URL tidak ditemukan di Environment Variables!")
     
-    # Memecah URL menjadi komponen agar lebih stabil
     url = urlparse(database_url)
     
+    # Menggunakan sslmode='require' agar koneksi ke Supabase diizinkan
     conn = psycopg2.connect(
         dbname=url.path[1:],
         user=url.username,
         password=url.password,
         host=url.hostname,
         port=url.port,
+        sslmode='require',
         cursor_factory=RealDictCursor
     )
     conn.autocommit = True
@@ -72,7 +73,6 @@ def dashboard():
     area = cur.fetchall()
     total = sum(a["kapasitas"] for a in area)
     terisi = sum(a["terisi"] for a in area)
-    # Menghindari error jika list kosong
     rekomendasi = max(area, key=lambda x: x["kapasitas"] - x["terisi"]) if area else {"nama_area": "-"}
     cur.close()
     conn.close()
@@ -99,7 +99,7 @@ def logout():
     return redirect("/login")
 
 # ===========================================
-# CRUD & PARKIR (Tambahkan rute lainnya di sini sesuai pola di atas)
+# CRUD AREA PARKIR
 # ===========================================
 
 @app.route("/area")
@@ -112,6 +112,8 @@ def area():
     cur.close()
     conn.close()
     return render_template("area.html", area=data)
+
+# ... (Tambahkan rute tambah/edit/hapus/parkir lainnya di sini)
 
 @app.errorhandler(404)
 def notfound(e): return "<h2>404 Halaman Tidak Ditemukan</h2>", 404
