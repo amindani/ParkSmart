@@ -1,21 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-import os
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "parksmart2026"
 
-# Ganti dengan Connection String lengkap dari Supabase Anda
-# Format: postgresql://[user]:[password]@[host]:[port]/[dbname]
-DATABASE_URL = "postgresql://postgres:N%23J_r%26Az-485%2CZg@db.rcpbncqaensgcpnsipk.supabase.co:5432/postgres"
-
-# ===========================================
-# DATABASE (PostgreSQL)
-# ===========================================
+# Mengambil koneksi database dari Environment Variables Vercel
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_db():
+    if not DATABASE_URL:
+        raise Exception("DATABASE_URL belum disetting di Environment Variables Vercel!")
     conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
     conn.autocommit = True
     return conn
@@ -78,11 +75,16 @@ def admin():
     area = cur.fetchall()
     total = sum(a["kapasitas"] for a in area)
     terisi = sum(a["terisi"] for a in area)
-    cur.execute("SELECT COUNT(*) FROM riwayat")
+    cur.execute("SELECT COUNT(*) as count FROM riwayat")
     kendaraan = cur.fetchone()['count']
     cur.close()
     conn.close()
     return render_template("admin.html", area=area, total=total, terisi=terisi, kosong=total-terisi, kendaraan=kendaraan)
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 # ===========================================
 # CRUD AREA PARKIR
@@ -182,7 +184,10 @@ def riwayat():
     conn.close()
     return render_template("riwayat.html", data=data)
 
-# Tambahkan route error dan main di bawah sini
+# ===========================================
+# ERROR HANDLERS
+# ===========================================
+
 @app.errorhandler(404)
 def notfound(e): return "<h2>404 Halaman Tidak Ditemukan</h2>", 404
 
