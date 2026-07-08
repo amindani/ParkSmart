@@ -1,0 +1,5 @@
+body { font-family: sans-serif; padding: 20px; }
+.card { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+.progress-bg { background: #eee; height: 20px; width: 100%; border-radius: 10px; overflow: hidden; }
+.bar { background: #4caf50; height: 100%; }
+.rekomendasi { background: #fff3cd; padding: 10px; margin-top: 20px; font-weight: bold; }

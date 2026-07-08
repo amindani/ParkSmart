@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Riwayat Parkir
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-white rounded-xl shadow p-6">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <h2 class="text-2xl font-bold">
+            Data Riwayat Parkir
+        </h2>
+
+        <span class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+            Total : {{ data|length }} Kendaraan
+        </span>
+
+    </div>
+
+    {% if data|length == 0 %}
+
+    <div class="bg-yellow-100 border border-yellow-300 p-5 rounded-lg">
+
+        Belum ada data parkir.
+
+    </div>
+
+    {% else %}
+
+    <div class="overflow-x-auto">
+
+    <table class="min-w-full border border-gray-300">
+
+        <thead class="bg-blue-600 text-white">
+
+            <tr>
+
+                <th class="p-3 border">No</th>
+                <th class="p-3 border">Username</th>
+                <th class="p-3 border">Plat Nomor</th>
+                <th class="p-3 border">Jenis</th>
+                <th class="p-3 border">Area</th>
+                <th class="p-3 border">Jam Masuk</th>
+                <th class="p-3 border">Jam Keluar</th>
+                <th class="p-3 border">Status</th>
+
+                {% if session["role"]=="admin" %}
+                <th class="p-3 border">Aksi</th>
+                {% endif %}
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for d in data %}
+
+        <tr class="hover:bg-gray-100">
+
+            <td class="border p-3 text-center">
+
+                {{ loop.index }}
+
+            </td>
+
+            <td class="border p-3">
+
+                {{ d["username"] }}
+
+            </td>
+
+            <td class="border p-3">
+
+                {{ d["plat_nomor"] }}
+
+            </td>
+
+            <td class="border p-3">
+
+                {{ d["jenis_kendaraan"] }}
+
+            </td>
+
+            <td class="border p-3 text-center">
+
+                {{ d["area"] }}
+
+            </td>
+
+            <td class="border p-3">
+
+                {{ d["jam_masuk"] }}
+
+            </td>
+
+            <td class="border p-3">
+
+                {{ d["jam_keluar"] }}
+
+            </td>
+
+            <td class="border p-3 text-center">
+
+                {% if d["status"]=="Masuk" %}
+
+                <span class="bg-green-500 text-white px-3 py-1 rounded-full">
+
+                    Sedang Parkir
+
+                </span>
+
+                {% else %}
+
+                <span class="bg-gray-600 text-white px-3 py-1 rounded-full">
+
+                    Keluar
+
+                </span>
+
+                {% endif %}
+
+            </td>
+
+            {% if session["role"]=="admin" %}
+
+            <td class="border p-3 text-center">
+
+                {% if d["status"]=="Masuk" %}
+
+                <a href="/parkir/keluar/{{ d['id'] }}"
+
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+
+                    Kendaraan Keluar
+
+                </a>
+
+                {% else %}
+
+                <span class="text-gray-400">
+
+                    Selesai
+
+                </span>
+
+                {% endif %}
+
+            </td>
+
+            {% endif %}
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

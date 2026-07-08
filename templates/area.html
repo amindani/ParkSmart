@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Kelola Area Parkir
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-white rounded-xl shadow p-6 mb-8">
+
+    <h2 class="text-2xl font-bold mb-5">
+        Tambah Area Parkir
+    </h2>
+
+    <form action="/area/tambah" method="POST">
+
+        <div class="grid md:grid-cols-2 gap-4">
+
+            <div>
+
+                <label class="font-semibold">
+                    Nama Area
+                </label>
+
+                <input
+                    type="text"
+                    name="nama_area"
+                    placeholder="Contoh : A"
+                    required
+                    class="w-full border rounded-lg p-3 mt-2">
+
+            </div>
+
+            <div>
+
+                <label class="font-semibold">
+                    Kapasitas
+                </label>
+
+                <input
+                    type="number"
+                    name="kapasitas"
+                    required
+                    class="w-full border rounded-lg p-3 mt-2">
+
+            </div>
+
+        </div>
+
+        <button
+            class="mt-5 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+
+            Tambah Area
+
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="bg-white rounded-xl shadow p-6">
+
+    <h2 class="text-2xl font-bold mb-5">
+        Daftar Area Parkir
+    </h2>
+
+    <table class="w-full border">
+
+        <thead class="bg-gray-100">
+
+            <tr>
+
+                <th class="border p-3">Area</th>
+
+                <th class="border p-3">Kapasitas</th>
+
+                <th class="border p-3">Terisi</th>
+
+                <th class="border p-3">Sisa</th>
+
+                <th class="border p-3">Aksi</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for a in area %}
+
+            <tr>
+
+                <form action="/area/edit/{{a['id']}}" method="POST">
+
+                <td class="border p-2">
+
+                    <input
+                        type="text"
+                        name="nama_area"
+                        value="{{a['nama_area']}}"
+                        class="border rounded p-2 w-full">
+
+                </td>
+
+                <td class="border p-2">
+
+                    <input
+                        type="number"
+                        name="kapasitas"
+                        value="{{a['kapasitas']}}"
+                        class="border rounded p-2 w-full">
+
+                </td>
+
+                <td class="border p-3 text-center">
+
+                    {{a['terisi']}}
+
+                </td>
+
+                <td class="border p-3 text-center">
+
+                    {{a['kapasitas']-a['terisi']}}
+
+                </td>
+
+                <td class="border p-3">
+
+                    <div class="flex gap-2">
+
+                        <button
+                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+
+                            Simpan
+
+                        </button>
+
+                        <a
+                            href="/area/hapus/{{a['id']}}"
+                            onclick="return confirm('Hapus area ini?')"
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+
+                            Hapus
+
+                        </a>
+
+                    </div>
+
+                </td>
+
+                </form>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

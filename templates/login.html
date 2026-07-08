@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ParkSmart Campus</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-gradient-to-r from-blue-700 to-blue-500 min-h-screen flex items-center justify-center">
+
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+
+    <div class="text-center">
+
+        <h1 class="text-4xl font-bold text-blue-700">
+            ParkSmart
+        </h1>
+
+        <p class="text-gray-500 mt-2">
+            Sistem Manajemen Parkir Kampus
+        </p>
+
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+
+            <div class="mt-5 bg-red-100 border border-red-300 text-red-700 p-3 rounded-lg">
+                {{ msg }}
+            </div>
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" class="mt-8 space-y-5">
+
+        <div>
+
+            <label class="font-semibold">
+                Login Sebagai
+            </label>
+
+            <select
+                name="role"
+                class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                required>
+
+                <option value="mahasiswa">
+                    Mahasiswa
+                </option>
+
+                <option value="admin">
+                    Admin
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label class="font-semibold">
+                Username
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Masukkan Username"
+                class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                required>
+
+        </div>
+
+        <div>
+
+            <label class="font-semibold">
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Masukkan Password"
+                class="w-full mt-2 border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                required>
+
+        </div>
+
+        <button
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold transition">
+
+            Login
+
+        </button>
+
+    </form>
+
+    <div class="mt-8 bg-blue-50 rounded-lg p-4">
+
+        <h3 class="font-bold text-blue-700 mb-2">
+            Informasi Login
+        </h3>
+
+        <p class="text-sm">
+
+            <b>Admin</b><br>
+
+            Username : admin<br>
+
+            Password : admin123
+
+        </p>
+
+        <hr class="my-3">
+
+        <p class="text-sm">
+
+            <b>Mahasiswa</b><br>
+
+            Username bebas<br>
+
+            Password bebas
+
+        </p>
+
+    </div>
+
+    <div class="text-center mt-8 text-gray-500 text-sm">
+
+        © 2026 ParkSmart Campus
+
+    </div>
+
+</div>
+
+</body>
+</html>

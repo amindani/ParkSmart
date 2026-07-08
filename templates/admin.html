@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Dashboard Admin
+{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+    <div class="bg-blue-600 text-white rounded-xl p-6 shadow">
+        <p>Total Slot</p>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ total }}
+        </h1>
+    </div>
+
+    <div class="bg-green-600 text-white rounded-xl p-6 shadow">
+        <p>Slot Kosong</p>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ kosong }}
+        </h1>
+    </div>
+
+    <div class="bg-red-600 text-white rounded-xl p-6 shadow">
+        <p>Slot Terisi</p>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ terisi }}
+        </h1>
+    </div>
+
+    <div class="bg-yellow-500 text-white rounded-xl p-6 shadow">
+        <p>Total Kendaraan</p>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ kendaraan }}
+        </h1>
+    </div>
+
+</div>
+
+<div class="bg-white rounded-xl shadow p-6">
+
+    <div class="flex justify-between items-center mb-5">
+
+        <h2 class="text-xl font-bold">
+
+            Data Area Parkir
+
+        </h2>
+
+        <a href="/area"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+
+            Kelola Area
+
+        </a>
+
+    </div>
+
+    <table class="w-full border">
+
+        <thead class="bg-gray-100">
+
+            <tr>
+
+                <th class="border p-3">Area</th>
+
+                <th class="border p-3">Kapasitas</th>
+
+                <th class="border p-3">Terisi</th>
+
+                <th class="border p-3">Kosong</th>
+
+                <th class="border p-3">Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for a in area %}
+
+            <tr>
+
+                <td class="border p-3">
+
+                    {{ a["nama_area"] }}
+
+                </td>
+
+                <td class="border p-3">
+
+                    {{ a["kapasitas"] }}
+
+                </td>
+
+                <td class="border p-3">
+
+                    {{ a["terisi"] }}
+
+                </td>
+
+                <td class="border p-3">
+
+                    {{ a["kapasitas"]-a["terisi"] }}
+
+                </td>
+
+                <td class="border p-3">
+
+                    {% if a["terisi"] >= a["kapasitas"] %}
+
+                    <span class="bg-red-500 text-white px-3 py-1 rounded">
+
+                        Penuh
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="bg-green-500 text-white px-3 py-1 rounded">
+
+                        Tersedia
+
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="grid md:grid-cols-2 gap-6 mt-8">
+
+    <a href="/riwayat"
+    class="bg-white rounded-xl shadow p-6 hover:shadow-lg">
+
+        <h2 class="text-xl font-bold text-blue-700">
+
+            Riwayat Parkir
+
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+
+            Melihat seluruh kendaraan yang masuk dan keluar.
+
+        </p>
+
+    </a>
+
+    <a href="/laporan"
+    class="bg-white rounded-xl shadow p-6 hover:shadow-lg">
+
+        <h2 class="text-xl font-bold text-blue-700">
+
+            Laporan Kendaraan
+
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+
+            Statistik kendaraan dan kapasitas parkir.
+
+        </p>
+
+    </a>
+
+</div>
+
+{% endblock %}

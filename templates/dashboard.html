@@ -1,0 +1,204 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Dashboard Mahasiswa
+{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+    <div class="bg-blue-600 text-white rounded-xl p-6 shadow">
+        <h3 class="text-lg">Total Slot</h3>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ total }}
+        </h1>
+    </div>
+
+    <div class="bg-green-600 text-white rounded-xl p-6 shadow">
+        <h3 class="text-lg">Slot Kosong</h3>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ kosong }}
+        </h1>
+    </div>
+
+    <div class="bg-red-600 text-white rounded-xl p-6 shadow">
+        <h3 class="text-lg">Slot Terisi</h3>
+        <h1 class="text-4xl font-bold mt-2">
+            {{ terisi }}
+        </h1>
+    </div>
+
+</div>
+
+<div class="bg-white rounded-xl shadow p-6 mb-8">
+
+    <h2 class="text-xl font-bold mb-5">
+
+        Informasi Slot Parkir
+
+    </h2>
+
+    {% for a in area %}
+
+    <div class="mb-6">
+
+        <div class="flex justify-between mb-2">
+
+            <span class="font-semibold">
+
+                Area {{ a['nama_area'] }}
+
+            </span>
+
+            <span>
+
+                {{ a['terisi'] }}/{{ a['kapasitas'] }}
+
+            </span>
+
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-4">
+
+            <div
+                class="bg-blue-600 h-4 rounded-full"
+                style="width: {{ (a['terisi']/a['kapasitas'])*100 }}%">
+            </div>
+
+        </div>
+
+        <p class="mt-2 text-gray-500">
+
+            Slot kosong :
+
+            {{ a['kapasitas']-a['terisi'] }}
+
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<div class="bg-green-100 border border-green-300 rounded-xl p-6 mb-8">
+
+    <h2 class="font-bold text-xl mb-2">
+
+        Rekomendasi Parkir
+
+    </h2>
+
+    <p>
+
+        Area
+
+        <b>
+
+            {{ rekomendasi['nama_area'] }}
+
+        </b>
+
+        memiliki slot kosong terbanyak.
+
+    </p>
+
+</div>
+
+<div class="bg-white rounded-xl shadow p-6">
+
+    <h2 class="text-xl font-bold mb-5">
+
+        Form Kendaraan Masuk
+
+    </h2>
+
+    <form action="/parkir/masuk" method="POST">
+
+        <div class="grid md:grid-cols-2 gap-4">
+
+            <div>
+
+                <label>
+
+                    Plat Nomor
+
+                </label>
+
+                <input
+                    type="text"
+                    name="plat"
+                    required
+                    class="w-full border rounded-lg p-3 mt-2">
+
+            </div>
+
+            <div>
+
+                <label>
+
+                    Jenis Kendaraan
+
+                </label>
+
+                <select
+                    name="jenis"
+                    class="w-full border rounded-lg p-3 mt-2">
+
+                    <option>
+
+                        Motor
+
+                    </option>
+
+                    <option>
+
+                        Mobil
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label>
+
+                    Area Parkir
+
+                </label>
+
+                <select
+                    name="area"
+                    class="w-full border rounded-lg p-3 mt-2">
+
+                    {% for a in area %}
+
+                    <option>
+
+                        {{ a['nama_area'] }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <button
+            class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+
+            Parkir Sekarang
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
